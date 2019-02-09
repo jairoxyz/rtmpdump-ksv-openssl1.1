@@ -1,6 +1,6 @@
 # rtmpdump-ksv-openssl1.1
 
-These sources of rtmpdump from http://git.ffmpeg.org/gitweb/rtmpdump.git inlcude K-S-V patches from https://github.com/K-S-V/Scripts/releases and are updated to build and run with OpenSSL 1.1x (patches based on https://github.com/xbmc/inputstream.rtmp/tree/master/depends/common/librtmp)
+These sources of rtmpdump from http://rtmpdump.mplayerhq.hu/ inlcude K-S-V patches from https://github.com/K-S-V/Scripts/releases and are updated to build and run with OpenSSL 1.1x (patches based on https://github.com/xbmc/inputstream.rtmp/tree/master/depends/common/librtmp)
 
 To compile type "make" with SYS=<platform name>, e.g.
 
@@ -17,5 +17,7 @@ To run against OpenSSL 1.1x set LD_LIBRARY_PATH to ./librtmp or use checkinstall
   $ sudo ldconfig
   
 Otherwise it uses OS librtmp.so, which is compiled against GNUTLS.
+
+More info and original sources can be found here: https://repo.or.cz/rtmpdump.git and here: http://git.ffmpeg.org/gitweb/rtmpdump.git
 
 Tested on Ubuntu 16/18 only.
