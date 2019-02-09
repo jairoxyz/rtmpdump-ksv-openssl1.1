@@ -11,7 +11,9 @@ for Linux, Unix, etc. (default)
 To run against OpenSSL 1.1x set LD_LIBRARY_PATH to ./librtmp or use checkinstall to setup properly:
 
   $ make VERSION="v2.4-ksv\ 20151223.gitfa8646d"
+  
   $ sudo checkinstall --pakdir "$HOME/tmp" --pkgname librtmp-ksv --pkgversion "2.4-ksv+20151223.gitfa8646d" --backup=no --default
+  
   $ sudo ldconfig
   
 Otherwise it uses OS librtmp.so, which is compiled against GNUTLS.
