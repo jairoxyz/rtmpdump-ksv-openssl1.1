@@ -3037,6 +3037,9 @@ SAVC(disneyToken);
 SAVC(getStreamLength);
 SAVC(sendStatus);
 SAVC(verifyClient);
+SAVC(cpsQuality);
+SAVC(dcps);
+
 static const AVal av_NetStream_Failed = AVC("NetStream.Failed");
 static const AVal av_NetStream_Play_Failed = AVC("NetStream.Play.Failed");
 static const AVal av_NetStream_Play_StreamNotFound = AVC("NetStream.Play.StreamNotFound");
@@ -3797,6 +3800,69 @@ HandleInvoke(RTMP *r, const char *body, unsigned int nBodySize)
             }
         }
     }
+  else if (AVMATCH(&method, &av_dcps))
+  {
+    AVal av_ModelName;
+    SAVC(CheckPublicStatus);
+
+     if (strlen(pageUrl) > 7)
+    {
+      strsplit(pageUrl + 7, FALSE, '/', &params);
+      av_ModelName.av_val = params[1];
+      av_ModelName.av_len = strlen(params[1]);
+
+       enc = pbuf;
+      enc = AMF_EncodeString(enc, pend, &av_CheckPublicStatus);
+      enc = AMF_EncodeNumber(enc, pend, ++r->m_numInvokes);
+      *enc++ = AMF_NULL;
+      enc = AMF_EncodeString(enc, pend, &av_ModelName);
+      av_Command.av_val = pbuf;
+      av_Command.av_len = enc - pbuf;
+
+       SendInvoke(r, &av_Command, FALSE);
+    }
+    else
+    {
+      RTMP_Log(RTMP_LOGERROR, "you must specify the pageUrl");
+      RTMP_Close(r);
+    }
+  }
+  else if (AVMATCH(&method, &av_cpsQuality))
+  {
+    if (obj.o_num >= 4)
+    {
+      int Status = AMFProp_GetBoolean(AMF_GetProp(&obj, NULL, 3));
+      if (Status == FALSE)
+      {
+          AVal Message;
+          AMFProp_GetString(AMF_GetProp(&obj, NULL, 4), &Message);
+          RTMP_Log(RTMP_LOGINFO, "Model status is %.*s", Message.av_len, Message.av_val);
+          RTMP_Close(r);
+      }
+      else
+      {
+        if (obj.o_num >= 7)
+        {
+          AVal Playpath, Server;
+          AMFProp_GetString(AMF_GetProp(&obj, NULL, 5), &Playpath);
+          AMFProp_GetString(AMF_GetProp(&obj, NULL, 6), &Server);
+          if (strncasecmp(&Playpath.av_val[Playpath.av_len - 4], ".mp4", 4) != 0)
+          {
+            char *playpath = calloc(Server.av_len + Playpath.av_len + 25, sizeof (char));
+            strcat(playpath, "rtmp://");
+            strncat(playpath, Server.av_val, Server.av_len);
+            strcat(playpath, "/live-origin/");
+            strncat(playpath, Playpath.av_val, Playpath.av_len);
+            strcat(playpath, ".mp4");
+            Playpath.av_val = playpath;
+            Playpath.av_len = strlen(playpath);
+          }
+          RTMP_ParsePlaypath(&Playpath, &r->Link.playpath);
+          RTMP_SendCreateStream(r);
+        }
+      }
+    }
+  }
   else if (AVMATCH(&method, &av_disneyToken))
     {
       double FirstNumber = AMFProp_GetNumber(AMF_GetProp(&obj, NULL, 3));
