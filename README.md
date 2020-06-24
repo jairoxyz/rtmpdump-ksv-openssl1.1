@@ -22,7 +22,7 @@ To compile against GNUTLS:
 
   make CRYPTO=GNUTLS
 
-More info and original sources can be found here: https://repo.or.cz/rtmpdump.git and here: http://git.ffmpeg.org/gitweb/rtmpdump.git
+More info and original sources can be found here: https://repo.or.cz/rtmpdump.git and here: http://git.ffmpeg.org/gitweb/rtmpdump.git and here: https://github.com/mirror/rtmpdump
 
 Tested on Ubuntu 16/18 only.
 
