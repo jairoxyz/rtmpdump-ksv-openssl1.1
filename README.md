@@ -16,8 +16,14 @@ To run against OpenSSL 1.1x set LD_LIBRARY_PATH to ./librtmp or use checkinstall
   
   $ sudo ldconfig
   
-Otherwise it uses OS librtmp.so, which is compiled against GNUTLS.
+On Ubuntu it otherwise uses the OS librtmp.so, which is compiled against GNUTLS.
+
+To compile against GNUTLS:
+
+  make CRYPTO=GNUTLS
 
 More info and original sources can be found here: https://repo.or.cz/rtmpdump.git and here: http://git.ffmpeg.org/gitweb/rtmpdump.git
 
 Tested on Ubuntu 16/18 only.
+
+License: GPLv2

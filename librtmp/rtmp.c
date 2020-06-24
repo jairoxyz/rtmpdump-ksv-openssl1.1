@@ -3800,18 +3800,19 @@ HandleInvoke(RTMP *r, const char *body, unsigned int nBodySize)
             }
         }
     }
+
   else if (AVMATCH(&method, &av_dcps))
   {
     AVal av_ModelName;
     SAVC(CheckPublicStatus);
 
-     if (strlen(pageUrl) > 7)
+    if (strlen(pageUrl) > 7)
     {
       strsplit(pageUrl + 7, FALSE, '/', &params);
       av_ModelName.av_val = params[1];
       av_ModelName.av_len = strlen(params[1]);
 
-       enc = pbuf;
+      enc = pbuf;
       enc = AMF_EncodeString(enc, pend, &av_CheckPublicStatus);
       enc = AMF_EncodeNumber(enc, pend, ++r->m_numInvokes);
       *enc++ = AMF_NULL;
@@ -3819,7 +3820,7 @@ HandleInvoke(RTMP *r, const char *body, unsigned int nBodySize)
       av_Command.av_val = pbuf;
       av_Command.av_len = enc - pbuf;
 
-       SendInvoke(r, &av_Command, FALSE);
+      SendInvoke(r, &av_Command, FALSE);
     }
     else
     {
@@ -3827,6 +3828,7 @@ HandleInvoke(RTMP *r, const char *body, unsigned int nBodySize)
       RTMP_Close(r);
     }
   }
+  
   else if (AVMATCH(&method, &av_cpsQuality))
   {
     if (obj.o_num >= 4)
@@ -3863,6 +3865,7 @@ HandleInvoke(RTMP *r, const char *body, unsigned int nBodySize)
       }
     }
   }
+  
   else if (AVMATCH(&method, &av_disneyToken))
     {
       double FirstNumber = AMFProp_GetNumber(AMF_GetProp(&obj, NULL, 3));
@@ -5190,7 +5193,7 @@ static int
 HTTP_read(RTMP *r, int fill)
 {
   char *ptr;
-  int hlen;
+  long hlen;
 
   if (fill)
     RTMPSockBuf_Fill(&r->m_sb);
@@ -5216,7 +5219,7 @@ HTTP_read(RTMP *r, int fill)
       hlen = 2147483648UL; // 2 GB
     }
   else
-    hlen = atoi(ptr + 16);
+    hlen = strtol(ptr+16, NULL, 10);
   ptr = strstr(ptr+16, "\r\n\r\n");
   if (!ptr)
     return -1;

@@ -282,7 +282,6 @@ DHInit(int nKeyBits)
 #else
   MP_set_w(g, 2);   /* base 2 */
   DH_set0_pqg(dh, p, NULL, g);
-
 #endif
 
 #if !defined(USE_OPENSSL) || !defined(OPENSSL_VERSION_NUMBER) || OPENSSL_VERSION_NUMBER < 0x10100000L
@@ -298,8 +297,6 @@ failed:
 
   return 0;
 }
-
-
 
 static int
 DHGenerateKey(MDH *dh)
