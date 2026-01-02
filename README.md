@@ -20,7 +20,27 @@ On Ubuntu it otherwise uses the OS librtmp.so, which is compiled against GNUTLS.
 
 To compile against GNUTLS:
 
-  make CRYPTO=GNUTLS
+  $ make CRYPTO=GNUTLS
+
+You may also build with just rtmpe support, and no rtmps/https support, by
+specifying -DNO_SSL in the XDEF macro, e.g.
+
+  $ make XDEF=-DNO_SSL
+
+or
+
+  $ make CRYPTO=POLARSSL XDEF=-DNO_SSL
+
+You may also turn off all crypto support if desired
+
+  $ make CRYPTO=
+
+A shared library is now built by default, in addition to the static
+library. You can also turn it off if desired
+
+  $ make SHARED=
+
+The rtmpdump programs still link to the static library, regardless.
 
 More info and original sources can be found here: https://repo.or.cz/rtmpdump.git and here: http://git.ffmpeg.org/gitweb/rtmpdump.git and here: https://github.com/mirror/rtmpdump
 
