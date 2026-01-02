@@ -1,9 +1,9 @@
-VERSION=v2.4
+VERSION=v2.6
 
-prefix=$(PREFIX)
+prefix=/usr/local
 
-#CC=$(CROSS_COMPILE)gcc
-#LD=$(CROSS_COMPILE)ld
+CC=$(CROSS_COMPILE)gcc
+LD=$(CROSS_COMPILE)ld
 
 SYS=posix
 #SYS=mingw
